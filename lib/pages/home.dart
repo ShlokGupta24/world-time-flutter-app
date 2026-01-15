@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:world_time_app/pages/choose_location.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -10,6 +11,20 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: Text("Home Screen"));
+    return Scaffold(
+      body: SafeArea(
+        child: Column(
+          children: [
+            TextButton.icon(
+              onPressed: () {
+                Navigator.pushNamed(context, '/location');
+              },
+              icon: Icon(Icons.edit_location),
+              label: Text("Edit Location"),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
