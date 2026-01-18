@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:world_time_app/services/world_time.dart';
 
 class Loading extends StatefulWidget {
   const Loading({super.key});
@@ -9,25 +10,32 @@ class Loading extends StatefulWidget {
   State<Loading> createState() => _LoadingState();
 }
 
+
 class _LoadingState extends State<Loading> {
-  void getTime() async {
-    Response response = await get(
-      Uri.parse(
-        'https://api.timezonedb.com/v2.1/get-time-zone?key=Z03QNRUFEYOQ&format=json&by=zone&zone=Asia/Kolkata',
-      ),
-    );
-    Map data = jsonDecode(response.body);
-    print(data);
+  void setupWorldTime() async {
+    WorldTime instance = WorldTime(location: 'Berlin',flag: 'germany.png',url: 'Europe/Berlin');
+    await instance.getTime();
+    Navigator.pushReplacementNamed(context, '/home', arguments: {
+      'location': instance.location,
+      'flag': instance.flag,
+      'time': instance.time,
+    });
   }
 
   @override
   void initState() {
     super.initState();
-    getTime();
+    setupWorldTime();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: Text("Loading Screen"));
+    return Scaffold(
+      body: Padding(
+      padding: EdgeInsets.all(50.0),
+      child: Text('loading....',style: TextStyle(fontSize: 20),)
+      ),
+      backgroundColor: Colors.white,
+    );
   }
 }
